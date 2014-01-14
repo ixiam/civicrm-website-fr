@@ -23,3 +23,11 @@ projects[markdown][subidr] = "contrib"
 
 projects[bootstrap][version] = 3.0
 projects[bootstrap][subdir] = contrib
+
+
+; Translations
+
+libraries[translations][download][type] = "get"
+libraries[translations][download][url] = "http://ftp.drupal.org/files/translations/7.x/drupal/drupal-7.23.es.po"
+libraries[translations][directory_name] = "translations"
+libraries[translations][destination] = .

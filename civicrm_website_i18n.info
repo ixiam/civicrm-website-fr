@@ -24,4 +24,7 @@ dependencies[] = field_ui
 dependencies[] = file
 dependencies[] = rdf
 dependencies[] = locale
+
 dependencies[] = views
+dependencies[] = jquery_update
+dependencies[] = l10n_update

@@ -17,10 +17,75 @@ function civicrm_website_i18n_install() {
   include_once DRUPAL_ROOT . '/profiles/standard/standard.install';
   standard_install();
 
+   _civicrm_website_i18n_theme("civilight2014");
+   _civicrm_website_i18n_locale("es");
+
   /*
-  _civi_go_details();
-  _civi_go_theme("theme783");
+  _civi_go_details(); 
   _civi_go_blocks();
   _civi_go_locale();
   */
+}
+
+function _civicrm_website_i18n_theme($default_theme = "garland", $admin_theme = "seven") {
+  $enable = array(
+    'theme_default' => $default_theme,
+    'admin_theme' => $admin_theme,
+  );
+  theme_enable($enable);
+
+  foreach ($enable as $var => $theme) {
+    if (!is_numeric($var)) {
+      variable_set($var, $theme);
+    }
+  }
+
+  // Disable the default Bartik theme
+  theme_disable(array('bartik'));
+}
+
+function _civicrm_website_i18n_locale($langcode = "es"){
+  $file_path    = dirname(__FILE__) . "/translations/drupal-7.23.$langcode.po";  
+  $mode         = LOCALE_IMPORT_OVERWRITE;
+  $group        = 'default';
+  
+  // Add locale
+  locale_add_language($langcode);
+
+  // Ensure we have the file uploaded
+  if (file_exists($file_path)) {
+
+    // Construct fake file object
+    $file = new stdClass();
+    $file->uid      = 1;
+    $file->status   = 0;
+    $file->filename = trim(drupal_basename($file_path), '.');
+    $file->uri      = $file_path;
+
+    // Now import strings into the language
+    if ($return = _locale_import_po($file, $langcode, $mode, $group) == FALSE) {
+      $variables = array('%filename' => $file->filename);
+      if (function_exists('drush_log'))
+        drush_log(dt('The translation import of %filename failed.', $variables), 'error');
+      watchdog('locale', 'The translation import of %filename failed.', $variables, WATCHDOG_ERROR);
+    }
+  }
+  else {
+    $variables = array('!filepath' => $file_path);
+    if (function_exists('drush_log'))
+      drush_log(dt('File to import at !filepath not found.', $variables), 'error');
+    watchdog('locale', 'File to import at !filepath not found.', $variables, WATCHDOG_ERROR);    
+  }
+
+  // Assign default language
+  $languages = language_list();
+  if (array_key_exists($langcode, $languages)) {
+    variable_set('language_default', (object) $languages[$langcode]);
+    if (function_exists('drush_log'))
+      drush_log(dt("!language assigned as default", array('!language' => $langcode)), 'ok');
+  }
+  else {
+    if (function_exists('drush_log'))
+      drush_log(dt("Specified language does not exist !language", array('!language' => $langcode)), 'warning');
+  }
 }
