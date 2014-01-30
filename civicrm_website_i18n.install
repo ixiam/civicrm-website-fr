@@ -1,4 +1,8 @@
 <?php
+define('PROFILE_SITE_NAME', 'CiviCRM en Español');
+define('PROFILE_SITE_SLOGAN', 'en Español');
+define('PROFILE_SITE_EMAIL', 'info@ixiam.com');
+define('PROFILE_SITE_LANGUAGE', 'es');
 
 /**
 * @file
@@ -12,19 +16,25 @@
 *
 * @see system_install()
 */
-
 function civicrm_website_i18n_install() {
   include_once DRUPAL_ROOT . '/profiles/standard/standard.install';
   standard_install();
 
-   _civicrm_website_i18n_theme("civilight2014");
-   _civicrm_website_i18n_locale("es");
+  _civicrm_website_i18n_details();
+  _civicrm_website_i18n_theme("civilight2014");
+  _civicrm_website_i18n_blocks();
+  _civicrm_website_i18n_locale(PROFILE_SITE_LANGUAGE);
+  _civicrm_website_i18n_config_wysiwyg();
 
-  /*
-  _civi_go_details(); 
-  _civi_go_blocks();
-  _civi_go_locale();
-  */
+  // Enable features modules here and not in .info so every possible dependency is already set up
+  _civicrm_website_i18n_enable_features();
+  
+}
+
+function _civicrm_website_i18n_details() {  
+  variable_set('site_name', PROFILE_SITE_NAME);
+  variable_set('site_mail', PROFILE_SITE_EMAIL);
+  variable_set('site_slogan', PROFILE_SITE_SLOGAN);
 }
 
 function _civicrm_website_i18n_theme($default_theme = "garland", $admin_theme = "seven") {
@@ -44,38 +54,38 @@ function _civicrm_website_i18n_theme($default_theme = "garland", $admin_theme = 
   theme_disable(array('bartik'));
 }
 
+function _civicrm_website_i18n_blocks() {
+  include_once('includes/civicrm_website_i18n.blocks.inc');
+
+  $params = array(
+    'theme'   => 'civilight2014',
+    'module'  => 'block',
+    'region'  => 'footer',
+    'title'   => '<none>',
+    'body'    => '<div class="civilight2014-footer-civicrm-civiorg"><a href="https://civicrm.org">Visit the official CiviCRM web site (in english)</a></div>
+<div class="civilight2014-footer-license-icon"><a href="https://creativecommons.org/licenses/by-sa/2.5/ca/deed.fr"><img src="//i.creativecommons.org/l/by-sa/2.5/ca/88x31.png" alt="Licence Creative Commons BY-SA 2.5"></a></div>
+<p class="civilight2014-footer-license-text"><p>Except where otherwise noted, content on this site is licensed under a <a href="http://creativecommons.org/licenses/by-sa/3.0/us/" rel="license">Creative Commons Attribution-Share Alike 3.0 United States Licence</a>.</p></p>
+<p class="civilight2014-footer-license-copyright">© 2014 CiviCRM LLC</p>',
+    'info'    => 'body_related',
+    'format'  => 'full_html',
+  );
+  _civicrm_website_i18n_create_block($params);
+
+  // Hide  blocks
+  db_update('block')
+    ->fields(array('region' => '-1', 'status' => '0'))
+    ->condition('delta', array('login', 'navigation', 'form', 'main', 'powered-by'), 'IN')
+    ->condition('theme', 'civilight2014', '=')
+    ->execute();
+}
+
 function _civicrm_website_i18n_locale($langcode = "es"){
   $file_path    = dirname(__FILE__) . "/translations/drupal-7.23.$langcode.po";  
   $mode         = LOCALE_IMPORT_OVERWRITE;
   $group        = 'default';
   
   // Add locale
-  locale_add_language($langcode);
-
-  // Ensure we have the file uploaded
-  if (file_exists($file_path)) {
-
-    // Construct fake file object
-    $file = new stdClass();
-    $file->uid      = 1;
-    $file->status   = 0;
-    $file->filename = trim(drupal_basename($file_path), '.');
-    $file->uri      = $file_path;
-
-    // Now import strings into the language
-    if ($return = _locale_import_po($file, $langcode, $mode, $group) == FALSE) {
-      $variables = array('%filename' => $file->filename);
-      if (function_exists('drush_log'))
-        drush_log(dt('The translation import of %filename failed.', $variables), 'error');
-      watchdog('locale', 'The translation import of %filename failed.', $variables, WATCHDOG_ERROR);
-    }
-  }
-  else {
-    $variables = array('!filepath' => $file_path);
-    if (function_exists('drush_log'))
-      drush_log(dt('File to import at !filepath not found.', $variables), 'error');
-    watchdog('locale', 'File to import at !filepath not found.', $variables, WATCHDOG_ERROR);    
-  }
+  locale_add_language($langcode);  
 
   // Assign default language
   $languages = language_list();
@@ -88,4 +98,29 @@ function _civicrm_website_i18n_locale($langcode = "es"){
     if (function_exists('drush_log'))
       drush_log(dt("Specified language does not exist !language", array('!language' => $langcode)), 'warning');
   }
+}
+
+function _civicrm_website_i18n_config_wysiwyg() {
+  // Load external file containing editor settings
+  include_once('includes/civicrm_website_i18n.editor.inc'); 
+  
+  // Add settings for 'Filtered HTML'
+  $item = new stdClass;
+  $item->format = 'filtered_html';
+  $item->editor = 'ckeditor';
+  $item->settings = _civicrm_website_i18n_editor_settings('Filtered HTML');
+  drupal_write_record('wysiwyg', $item);
+  
+  // Add settings for 'Full HTML'
+  $item = new stdClass;
+  $item->format = 'full_html';
+  $item->editor = 'ckeditor';
+  $item->settings = _civicrm_website_i18n_editor_settings('Full HTML');
+  drupal_write_record('wysiwyg', $item);  
+}
+
+function _civicrm_website_i18n_enable_features(){
+  $modules = array('civicrm_website_i18n_pages', 'civicrm_website_i18n_menus');  
+  $enable_dependencies = TRUE;
+  module_enable($modules, $enable_dependencies);  
 }

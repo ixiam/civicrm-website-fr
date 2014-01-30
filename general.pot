@@ -1,0 +1,51 @@
+# $Id$
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from file: civicrm_website_i18n.install: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2014-01-14 10:40-0500\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: civicrm_website_i18n.install:102;105
+msgid "What is CiviCRM?"
+msgstr "¿Qué es CiviCRM?"
+
+#: civicrm_website_i18n.install:110;113
+msgid "Demo"
+msgstr "Demo"
+
+#: civicrm_website_i18n.install:118;121
+msgid "News"
+msgstr "Noticias"
+
+#: civicrm_website_i18n.install:126;129
+msgid "References"
+msgstr "Referencias"
+
+#: civicrm_website_i18n.install:134;137
+msgid "Help"
+msgstr "Ayuda"
+
+#: civicrm_website_i18n.install:75;82
+msgid "locale"
+msgstr "lcoalización"
+
+#: civicrm_website_i18n.install:75
+msgid "The translation import of %filename failed."
+msgstr "Ha fallado la importación de la traducción de %filename ."
+
+#: civicrm_website_i18n.install:82
+msgid "File to import at !filepath not found."
+msgstr "El archivo para importar !filepath no existe."
+

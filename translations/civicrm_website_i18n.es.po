@@ -1,0 +1,35 @@
+# $Id$
+#
+# Spanish translation of Drupal (installer)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from file: civicrm_website_i18n.install: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: civicrm_website_i18n 1.0\n"
+"POT-Creation-Date: 2014-01-30 11:31-0500\n"
+"PO-Revision-Date: 2014-01-30 11:31-0500\n"
+"Last-Translator: Luciano Spiegel <l.spiegel@ixiam.com>\n"
+"Language-Team: Spanish CiviCRM\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: civicrm_website_i18n.install:104
+msgid "Discover"
+msgstr "Descubre"
+
+#: civicrm_website_i18n.install:112
+msgid "Help"
+msgstr "Ayuda"
+
+#: civicrm_website_i18n.install:120
+msgid "Blog"
+msgstr "Blog"
+
+#: civicrm_website_i18n.install:128
+msgid "Demo"
+msgstr "Demo"
+
