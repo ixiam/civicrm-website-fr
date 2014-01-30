@@ -1,7 +1,7 @@
 core = 7.x
 
 api = 2
-projects[drupal] = "7.25"
+projects[drupal] = "7.26"
 
 ;projects[civicrm_website_i18n][type] = "profile"
 ;projects[civicrm_website_i18n][download][type] = "git"
